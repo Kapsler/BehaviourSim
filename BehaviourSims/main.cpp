@@ -7,6 +7,8 @@
 #include "Agent.h"
 #include <iostream>
 #include "NPC.h"
+#include "Door.h"
+#include "GameWorld.h"
 
 const float screenWidth = 1050.0f;
 const float screenHeight = 1200.0f;
@@ -18,19 +20,29 @@ std::vector<Interactive*> toInteract;
 std::vector<Moving*> toMove;
 std::vector<Behaving*> toBehave;
 
+void GenerateWorld()
+{
+	Map* map = new Map(screenWidth, screenHeight, "./Assets/house30.png");
+	toRender.push_back(map);
+	toInteract.push_back(map);
+
+	Door* door = new Door("./Assets/door.png", sf::Vector2i(9, 14), map);
+	toRender.push_back(door);
+	GameWorld::getInstance().AddDoor("door1", door);
+
+	NPC* mainCharacter = new NPC("./Assets/panda.png", sf::Vector2i(15, 15), map);
+	toRender.push_back(mainCharacter);
+	toMove.push_back(mainCharacter);
+	toBehave.push_back(mainCharacter);
+
+}
+
 int main()
 {
 	window = new sf::RenderWindow(sf::VideoMode(static_cast<unsigned int>(screenWidth), static_cast<unsigned int>(screenHeight)), "Sims");
 	window->setVerticalSyncEnabled(true);
 
-	Map* map = new Map(screenWidth, screenHeight, "./Assets/house30.png");
-	toRender.push_back(map);
-	toInteract.push_back(map);
-
-	NPC* mainCharacter = new NPC("./Assets/Panda.png", sf::Vector2i(15,15), map);
-	toRender.push_back(mainCharacter);
-	toMove.push_back(mainCharacter);
-	toBehave.push_back(mainCharacter);
+	GenerateWorld();
 
 	sf::Clock fpsClock, moveClock;
 	float totalMoveTime = 0;
@@ -88,22 +100,24 @@ int main()
 
 		totalMoveTime += moveClock.restart().asSeconds();
 
-		//Behaving
-		for(auto b : toBehave)
-		{
-			b->Behave();
-		}
-
 		//Moving
-		if(movementFlag && totalMoveTime > 0.20f)
+		if(movementFlag && totalMoveTime > 1.0f)
 		{
 			float fps = 1.0f / (currentFpsTime);
-			window->setTitle("Pathfinding (" + std::to_string(static_cast<int>(fps)) + ")");
+			window->setTitle("Sims (" + std::to_string(static_cast<int>(fps)) + ")");
 
 			for(auto m : toMove)
 			{
 				m->Move();
 			}
+
+			//Behaving
+			for (auto b : toBehave)
+			{
+				b->Behave();
+			}
+			//Behaving End
+
 			totalMoveTime = 0.0f;
 		}
 

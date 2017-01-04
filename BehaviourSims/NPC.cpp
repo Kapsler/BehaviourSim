@@ -1,54 +1,68 @@
 #include "NPC.h"
+#include <iostream>
+#include "Door.h"
+#include "GameWorld.h"
 
-NPC::WalkToIndex::WalkToIndex(sf::Vector2i& target)
+NPC::WalkToIndex::WalkToIndex(NPC* targetNpc, sf::Vector2i& target)
 {
 	targetIndex = target;
+	npc = targetNpc;
 }
 
 BehaviourTree::BehaviourStatus NPC::WalkToIndex::run()
 {
-	bool result = npc->GoToIndex(targetIndex);
-	//Fix Results!
-
-	if(result)
-	{
-		return BehaviourTree::Success;
-	} else
-	{
-		return BehaviourTree::Failure;
-	}
+	return npc->GoToIndex(targetIndex);
 }
 
 NPC::NPC(const std::string filename, sf::Vector2i startingIndex, Map* mapPtr) : Agent(filename, startingIndex, mapPtr)
 {
 	tree = new BehaviourTree();
 
+	BehaviourTree::Sequence* walkAroundSequence = new BehaviourTree::Sequence();
+	BehaviourTree::Node* gotonode1 = new WalkToIndex(this, sf::Vector2i(18, 18));
+	Door::OpenDoorAction* openDoorNode = new Door::OpenDoorAction(GameWorld::getInstance().GetDoor("door1"));
+	BehaviourTree::Node* gotonode2 = new WalkToIndex(this, sf::Vector2i(15, 15));
+	Door::CloseDoorAction* closeDoorNode = new Door::CloseDoorAction(GameWorld::getInstance().GetDoor("door1"));
 	
-	
-	//Add Nodes
+	walkAroundSequence->addChild(gotonode1);
+	walkAroundSequence->addChild(openDoorNode);
+	walkAroundSequence->addChild(gotonode2);
+	walkAroundSequence->addChild(closeDoorNode);
 
-
+	tree->root = walkAroundSequence;
 }
 
 void NPC::Behave()
 {
-	if (tree)
+	
+	if (tree && tree->root)
 	{
 		tree->root->run();
 	}
 }
 
-bool NPC::GoToIndex(sf::Vector2i target)
+BehaviourTree::BehaviourStatus NPC::GoToIndex(sf::Vector2i target)
 {
-	bool result = false;
+	if(target == positionIndex)
+	{
+		return BehaviourTree::Success;
+	}
+
+	bool result;
 	HexData* nextHex = GetNextField(target, result);
+
+	if(result == false)
+	{
+		return BehaviourTree::Failure;
+	}
 
 	RotateStencil(nextHex);
 	positionIndex = nextHex->index;
 	position = nextHex->hex->getPosition();
 	sprite.setPosition(position);
 
-	return result;
+
+	return BehaviourTree::Running;
 }
 
 HexData* NPC::GetNextField(sf::Vector2i indexOfTarget, bool& result)
@@ -57,15 +71,16 @@ HexData* NPC::GetNextField(sf::Vector2i indexOfTarget, bool& result)
 
 	pathToFollow.clear();
 
-
-	pathToFollow = map->AStarPath((*map->GetMapPtr())[positionIndex.x][positionIndex.y], target, *map->GetMapPtr(), this, result);
+	pathToFollow = map->AStarPath((*map->GetMapPtr())[positionIndex.x][positionIndex.y], target, *map->GetMapPtr(), this);
 
 	if (pathToFollow.size() > 1)
 	{
 		HexData* nextField = pathToFollow[1];
 
+		result = true;
 		return nextField;
 	}
 	
+	result = false;
 	return map->GetHexDatByIndex(positionIndex.x, positionIndex.y);
 }

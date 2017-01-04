@@ -143,7 +143,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="BehaviourTree.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -156,6 +158,7 @@
     <ClInclude Include="BehaviourTree.h" />
     <ClInclude Include="CubeCoords.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="GameWorld.h" />
     <ClInclude Include="Hexagon.h" />
     <ClInclude Include="HexData.h" />
     <ClInclude Include="Interactive.h" />

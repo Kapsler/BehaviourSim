@@ -20,11 +20,19 @@ void BehaviourTree::DecoratorNode::setChild(Node* newChild)
 
 BehaviourTree::BehaviourStatus BehaviourTree::Selector::run()
 {
-	for (auto c : children)
+	for (int i = startingIndex; i < children.size(); i++)
 	{
-		if (c->run() == Success)
+		BehaviourStatus result = children[i]->run();
+
+		if (result == Success)
 		{
+			startingIndex = 0;
 			return Success;
+		}
+		if (result == Running)
+		{
+			startingIndex = i;
+			return Running;
 		}
 	}
 
@@ -33,14 +41,23 @@ BehaviourTree::BehaviourStatus BehaviourTree::Selector::run()
 
 BehaviourTree::BehaviourStatus BehaviourTree::Sequence::run()
 {
-	for (auto c : children)
+	for (int i = startingIndex; i < children.size(); i++)
 	{
-		if (c->run() == Failure)
+		BehaviourStatus result = children[i]->run();
+
+		if(result == Failure)
 		{
+			startingIndex = 0;
 			return Failure;
+		}
+		if(result == Running)
+		{
+			startingIndex = i;
+			return Running;
 		}
 	}
 
+	startingIndex = 0;
 	return Success;
 }
 
@@ -82,4 +99,11 @@ BehaviourTree::BehaviourStatus BehaviourTree::Inverter::run()
 	default:
 		return Failure;
 	}
+}
+
+BehaviourTree::BehaviourStatus BehaviourTree::Successor::run()
+{
+	child->run();
+
+	return Success;
 }

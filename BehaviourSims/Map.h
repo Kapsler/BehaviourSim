@@ -27,7 +27,7 @@ public:
 	HexData* GetHexDatByIndex(int x, int y);
 	void AddThreat(Agent* threat);
 	void ResetThreat(Agent* toIgnore);
-	std::vector<HexData*> AStarPath(HexData* start, HexData* finish, std::vector<std::vector<HexData*>> &usedMap, Agent* toIgnore, bool& done);
+	std::vector<HexData*> AStarPath(HexData* start, HexData* finish, std::vector<std::vector<HexData*>> &usedMap, Agent* toIgnore);
 
 private:
 	void GenerateFromImage(float screenWidth, float screenHeight, const sf::Image& mapImage);

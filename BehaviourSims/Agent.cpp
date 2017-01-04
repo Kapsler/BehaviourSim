@@ -87,7 +87,7 @@ HexData* Agent::GetNextField()
 	{
 		HexData* target = wayPoints[targetindex%wayPoints.size()];
 
-		pathToFollow = map->AStarPath((*map->GetMapPtr())[positionIndex.x][positionIndex.y], target, *map->GetMapPtr(), this, result);
+		pathToFollow = map->AStarPath((*map->GetMapPtr())[positionIndex.x][positionIndex.y], target, *map->GetMapPtr(), this);
 
 		if (pathToFollow.size() > 1)
 		{

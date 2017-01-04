@@ -23,6 +23,8 @@ public:
 		void addChildren(std::vector<Node*>& newChrildren);
 
 		std::vector<Node*> children;
+
+		int startingIndex = 0;
 	};
 
 	class DecoratorNode : public Node
@@ -55,6 +57,11 @@ public:
 	};
 
 	class Inverter : public DecoratorNode
+	{
+		virtual BehaviourStatus run() override;
+	};
+
+	class Successor : public DecoratorNode
 	{
 		virtual BehaviourStatus run() override;
 	};

@@ -5,7 +5,8 @@ class NPC : public Agent, public Behaving
 {
 	class WalkToIndex : public BehaviourTree::Node
 	{
-		WalkToIndex(sf::Vector2i& target);
+	public:
+		WalkToIndex(NPC* targetNpc, sf::Vector2i& target);
 
 		virtual BehaviourTree::BehaviourStatus run() override;
 
@@ -18,7 +19,7 @@ public:
 
 	virtual void Behave() override;
 
-	virtual bool GoToIndex(sf::Vector2i target);
+	virtual BehaviourTree::BehaviourStatus GoToIndex(sf::Vector2i target);
 
 	virtual HexData* GetNextField(sf::Vector2i target, bool& result);
 };

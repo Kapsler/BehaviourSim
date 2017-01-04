@@ -173,7 +173,7 @@ std::vector<HexData*> Map::GetNeighbors(HexData* current, std::vector<std::vecto
 	return neighbors;
 }
 
-std::vector<HexData*> Map::AStarPath(HexData* start, HexData* target, std::vector<std::vector<HexData*>> &usedMap, Agent* toIgnore, bool& done)
+std::vector<HexData*> Map::AStarPath(HexData* start, HexData* target, std::vector<std::vector<HexData*>> &usedMap, Agent* toIgnore)
 {
 	ResetThreat(toIgnore);
 
@@ -186,7 +186,6 @@ std::vector<HexData*> Map::AStarPath(HexData* start, HexData* target, std::vecto
 	if (GetDifficulty(target) >= unpassable)
 	{
 		std::cout << "Target is unpassable!" << std::endl;
-		done = false;
 		return foundPath;
 	}
 
@@ -250,7 +249,6 @@ std::vector<HexData*> Map::AStarPath(HexData* start, HexData* target, std::vecto
 
 	//std::cout << "Found Path! Size: " << foundPath.size() << std::endl;
 
-	done = true;
 	return foundPath;
 }
 
@@ -423,10 +421,8 @@ void Map::GenerateFromImage(float screenWidth, float screenHeight, const sf::Ima
 			tmp->setOutlineThickness(outlineThickness);
 			tmp->setPosition(offsetX, offsetY);
 
-
 			sf::Color currentColor = mapImage.getPixel(j, i);
 
-			
 			if (currentColor == grassColor)
 			{
 				hexDatTmp->terrain = grassDifficulty;
@@ -453,9 +449,9 @@ void Map::GenerateFromImage(float screenWidth, float screenHeight, const sf::Ima
 				tmp->setFillColor(notfoundColor);
 			}
 
-			hexDatTmp->hex = tmp;
 			hexDatTmp->index.x = i;
 			hexDatTmp->index.y = j;
+			hexDatTmp->hex = tmp;
 			hexMap[i][j] = hexDatTmp;
 
 			offsetX += sizes.width() * 3.0f / 4.0f + outlineThickness / 2.0f;
