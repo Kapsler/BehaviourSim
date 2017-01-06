@@ -143,17 +143,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="Bed.cpp" />
     <ClCompile Include="BehaviourTree.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainCharacter.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="ThreatStencil.cpp" />
+    <ClCompile Include="Toilet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
+    <ClInclude Include="Bed.h" />
     <ClInclude Include="Behaving.h" />
     <ClInclude Include="BehaviourTree.h" />
     <ClInclude Include="CubeCoords.h" />
@@ -162,12 +166,14 @@
     <ClInclude Include="Hexagon.h" />
     <ClInclude Include="HexData.h" />
     <ClInclude Include="Interactive.h" />
+    <ClInclude Include="MainCharacter.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Moving.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="ThreatStencil.h" />
+    <ClInclude Include="Toilet.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -16,7 +16,7 @@ BehaviourTree::BehaviourStatus Door::OpenDoorAction::run()
 	
 	if(door->open)
 	{
-		return  BehaviourTree::Success;
+		return  BehaviourTree::Running;
 	} 
 
 	return BehaviourTree::Failure;
@@ -39,10 +39,26 @@ BehaviourTree::BehaviourStatus Door::CloseDoorAction::run()
 
 	if (!door->open)
 	{
-		return  BehaviourTree::Success;
+		return  BehaviourTree::Running;
 	}
 
 	return BehaviourTree::Failure;
+}
+
+Door::IsDoorOpen::IsDoorOpen(Door* targetDoor)
+{
+	door = targetDoor;
+}
+
+BehaviourTree::BehaviourStatus Door::IsDoorOpen::run()
+{
+	if(door->open)
+	{
+		return BehaviourTree::Success;
+	} else
+	{
+		return BehaviourTree::Failure;
+	}
 }
 
 Door::Door(const std::string filename, sf::Vector2i startingIndex, Map* mapPtr): Agent(filename, startingIndex, mapPtr)
@@ -65,7 +81,7 @@ void Door::openDoor()
 	sprite.rotate(90.0f);
 }
 
-void Door::Interact()
+bool Door::Interact()
 {
 	if(open)
 	{
@@ -74,6 +90,8 @@ void Door::Interact()
 	{
 		openDoor();
 	}
+
+	return true;
 }
 
 void Door::Move()
@@ -83,4 +101,9 @@ void Door::Move()
 HexData* Door::GetNextField()
 {
 	return new HexData();
+}
+
+sf::Vector2i Door::GetIndex()
+{
+	return positionIndex;
 }

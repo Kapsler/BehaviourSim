@@ -76,12 +76,19 @@ BehaviourTree::BehaviourStatus BehaviourTree::RepeatUntilFail::run()
 
 BehaviourTree::BehaviourStatus BehaviourTree::Repeat::run()
 {
-	for (auto c : children)
+	for (int i = startingIndex; i < children.size(); i++)
 	{
-		c->run();
-	}
+		BehaviourStatus result = children[i]->run();
 
-	return Running;
+		if (result != Running)
+		{
+			startingIndex = 0;
+		}
+		if (result == Running)
+		{
+			return Running;
+		}
+	}
 }
 
 BehaviourTree::BehaviourStatus BehaviourTree::Inverter::run()

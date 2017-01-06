@@ -5,6 +5,6 @@ class Object
 {
 public:
 
-	virtual void Interact() = 0;
-
+	virtual bool Interact() = 0;
+	virtual sf::Vector2i GetIndex() = 0;
 };

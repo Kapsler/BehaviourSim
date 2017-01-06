@@ -3,6 +3,9 @@
 #include "Renderable.h"
 #include "Agent.h"
 
+//TODO add threat stencil
+//unpassable if closed, 0 if open
+
 class Door : public Object, public Agent
 {
 public:
@@ -26,15 +29,28 @@ public:
 		Door* door;
 	};
 
+	class IsDoorOpen : public BehaviourTree::Node
+	{
+	public:
+		IsDoorOpen(Door* targetDoor);
+
+		BehaviourTree::BehaviourStatus run() override;
+
+		Door* door;
+	};
+
+
+
 	Door(const std::string filename, sf::Vector2i startingIndex, Map* mapPtr);
 	~Door();
 
 	void closeDoor();
 	void openDoor();
-	virtual void Interact() override;
+	virtual bool Interact() override;
 
 	void Move() override;
 	HexData* GetNextField() override;
 
+	sf::Vector2i GetIndex() override;
 	bool open = false;
 };

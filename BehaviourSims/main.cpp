@@ -9,6 +9,8 @@
 #include "NPC.h"
 #include "Door.h"
 #include "GameWorld.h"
+#include "MainCharacter.h"
+#include <chrono>
 
 const float screenWidth = 1050.0f;
 const float screenHeight = 1200.0f;
@@ -28,9 +30,21 @@ void GenerateWorld()
 
 	Door* door = new Door("./Assets/door.png", sf::Vector2i(9, 14), map);
 	toRender.push_back(door);
-	GameWorld::getInstance().AddDoor("door1", door);
+	GameWorld::getInstance().AddDoor("toiletdoor", door);
 
-	NPC* mainCharacter = new NPC("./Assets/panda.png", sf::Vector2i(15, 15), map);
+	Toilet* toilet = new Toilet("./Assets/toilet.png", sf::Vector2i(4, 14), map);
+	toRender.push_back(toilet);
+	GameWorld::getInstance().AddToilet("toilet", toilet);
+
+	door = new Door("./Assets/door.png", sf::Vector2i(9, 7), map);
+	toRender.push_back(door);
+	GameWorld::getInstance().AddDoor("bedroomdoor", door);
+
+	Bed* bed = new Bed("./Assets/bed.png", sf::Vector2i(4, 10), map);
+	toRender.push_back(bed);
+	GameWorld::getInstance().AddBed("bed", bed);
+
+	MainCharacter* mainCharacter = new MainCharacter("./Assets/panda.png", sf::Vector2i(15, 15), map);
 	toRender.push_back(mainCharacter);
 	toMove.push_back(mainCharacter);
 	toBehave.push_back(mainCharacter);
@@ -39,6 +53,8 @@ void GenerateWorld()
 
 int main()
 {
+	srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+
 	window = new sf::RenderWindow(sf::VideoMode(static_cast<unsigned int>(screenWidth), static_cast<unsigned int>(screenHeight)), "Sims");
 	window->setVerticalSyncEnabled(true);
 
