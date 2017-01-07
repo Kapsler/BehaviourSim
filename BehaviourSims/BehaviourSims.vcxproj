@@ -143,9 +143,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="Bathtub.cpp" />
     <ClCompile Include="Bed.cpp" />
     <ClCompile Include="BehaviourTree.cpp" />
+    <ClCompile Include="Chair.cpp" />
+    <ClCompile Include="Desk.cpp" />
+    <ClCompile Include="DinnerTable.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="DoorStencil.cpp" />
+    <ClCompile Include="EmptyThreatStencil.cpp" />
+    <ClCompile Include="Fridge.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="main.cpp" />
@@ -157,11 +164,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
+    <ClInclude Include="Bathtub.h" />
     <ClInclude Include="Bed.h" />
     <ClInclude Include="Behaving.h" />
     <ClInclude Include="BehaviourTree.h" />
+    <ClInclude Include="Chair.h" />
     <ClInclude Include="CubeCoords.h" />
+    <ClInclude Include="Desk.h" />
+    <ClInclude Include="DinnerTable.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="DoorStencil.h" />
+    <ClInclude Include="EmptyThreatStencil.h" />
+    <ClInclude Include="Fridge.h" />
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="Hexagon.h" />
     <ClInclude Include="HexData.h" />

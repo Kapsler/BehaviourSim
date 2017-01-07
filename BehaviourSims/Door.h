@@ -2,6 +2,7 @@
 #include "Object.h"
 #include "Renderable.h"
 #include "Agent.h"
+#include "DoorStencil.h"
 
 //TODO add threat stencil
 //unpassable if closed, 0 if open
@@ -53,4 +54,6 @@ public:
 
 	sf::Vector2i GetIndex() override;
 	bool open = false;
+
+	ThreatStencil* closedThreatStencil, *openThreatStencil;
 };

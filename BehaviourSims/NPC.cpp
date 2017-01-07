@@ -13,6 +13,7 @@ BehaviourTree::BehaviourStatus NPC::WalkToIndex::run()
 {
 	if (targetIndex == npc->positionIndex)
 	{
+		std::cout << "WalkToIndex: Success" << std::endl;
 		return BehaviourTree::Success;
 	}
 
@@ -21,6 +22,7 @@ BehaviourTree::BehaviourStatus NPC::WalkToIndex::run()
 
 	if (result == false)
 	{
+		std::cout << "WalkToIndex: Failure" << std::endl;
 		return BehaviourTree::Failure;
 	}
 
@@ -29,7 +31,42 @@ BehaviourTree::BehaviourStatus NPC::WalkToIndex::run()
 	npc->position = nextHex->hex->getPosition();
 	npc->sprite.setPosition(npc->position);
 
+	std::cout << "WalkToIndex: Running" << std::endl;
 	return BehaviourTree::Running;
+}
+
+NPC::IsPathPossible::IsPathPossible(NPC* targetNpc, sf::Vector2i& target)
+{
+	npc = targetNpc;
+	targetIndex = target;
+}
+
+NPC::IsPathPossible::IsPathPossible(NPC* targetNpc, Object* object)
+{
+	npc = targetNpc;
+	targetIndex = object->GetIndex();
+}
+
+BehaviourTree::BehaviourStatus NPC::IsPathPossible::run()
+{
+	bool result;
+
+	if (targetIndex == npc->GetPositionIndex())
+	{
+		std::cout << "IsPathPossible: Succcess" << std::endl;
+		return BehaviourTree::Success;
+	}
+
+	npc->GetNextField(targetIndex, result);
+
+	if (result == false)
+	{
+		std::cout << "IsPathPossible: Failure" << std::endl;
+		return BehaviourTree::Failure;
+	} 
+
+	std::cout << "IsPathPossible: Succcess" << std::endl;
+	return BehaviourTree::Success;
 }
 
 NPC::WalkToObject::WalkToObject(NPC* targetNpc, Object* object)
@@ -42,6 +79,7 @@ BehaviourTree::BehaviourStatus NPC::WalkToObject::run()
 {
 	if (targetIndex == npc->positionIndex)
 	{
+		std::cout << "WalkToObject: Success" << std::endl;
 		return BehaviourTree::Success;
 	}
 
@@ -50,6 +88,7 @@ BehaviourTree::BehaviourStatus NPC::WalkToObject::run()
 
 	if (result == false)
 	{
+		std::cout << "WalkToObject: Failure" << std::endl;
 		return BehaviourTree::Failure;
 	}
 
@@ -58,6 +97,7 @@ BehaviourTree::BehaviourStatus NPC::WalkToObject::run()
 	npc->position = nextHex->hex->getPosition();
 	npc->sprite.setPosition(npc->position);
 
+	std::cout << "WalkToObject: Running" << std::endl;
 	return BehaviourTree::Running;
 }
 
@@ -72,21 +112,25 @@ BehaviourTree::BehaviourStatus NPC::WalkToDoor::run()
 	bool result;
 	HexData* nextHex = npc->GetNextField(targetIndex, result);
 
+	if (targetIndex == nextHex->index)
+	{
+		std::cout << "WalkToDoor: Success" << std::endl;
+		return BehaviourTree::Success;
+	}
+
 	if (result == false)
 	{
+		std::cout << "WalkToDoor: Failure" << std::endl;
 		return BehaviourTree::Failure;
 	}
 
-	if (targetIndex == nextHex->index)
-	{
-		return BehaviourTree::Success;
-	}
 
 	npc->RotateStencil(nextHex);
 	npc->positionIndex = nextHex->index;
 	npc->position = nextHex->hex->getPosition();
 	npc->sprite.setPosition(npc->position);
 
+	std::cout << "WalkToDoor: Running" << std::endl;
 	return BehaviourTree::Running;
 }
 
@@ -100,11 +144,13 @@ BehaviourTree::BehaviourStatus NPC::InteractWithObject::run()
 {
 	if(targetObject->Interact())
 	{
+		std::cout << "InteractWithObject: Success" << std::endl;
 		return BehaviourTree::Success;
-	} else
-	{
-		return BehaviourTree::Failure;
-	}
+	} 
+
+	std::cout << "InteractWithObject: Failure" << std::endl;
+	return BehaviourTree::Failure;
+	
 }
 
 NPC::NPC(const std::string filename, sf::Vector2i startingIndex, Map* mapPtr) : Agent(filename, startingIndex, mapPtr)

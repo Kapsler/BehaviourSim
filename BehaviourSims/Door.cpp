@@ -1,4 +1,6 @@
 #include "Door.h"
+#include <iostream>
+#include "EmptyThreatStencil.h"
 
 Door::OpenDoorAction::OpenDoorAction(Door* targetDoor)
 {
@@ -9,16 +11,19 @@ BehaviourTree::BehaviourStatus Door::OpenDoorAction::run()
 {
 	if(door->open)
 	{
+		std::cout << "OpenDoor: Success" << std::endl;
 		return BehaviourTree::Success;
 	} 
 
-	door->Interact();
+	door->openDoor();
 	
 	if(door->open)
 	{
+		std::cout << "OpenDoor: Running" << std::endl;
 		return  BehaviourTree::Running;
 	} 
 
+	std::cout << "OpenDoor: Failure" << std::endl;
 	return BehaviourTree::Failure;
 	
 }
@@ -32,16 +37,19 @@ BehaviourTree::BehaviourStatus Door::CloseDoorAction::run()
 {
 	if (!door->open)
 	{
+		std::cout << "CloseDoor: Success" << std::endl;
 		return BehaviourTree::Success;
 	}
 
-	door->Interact();
+	door->closeDoor();
 
 	if (!door->open)
 	{
+		std::cout << "CloseDoor: Running" << std::endl;
 		return  BehaviourTree::Running;
 	}
 
+	std::cout << "CloseDoor: Failure" << std::endl;
 	return BehaviourTree::Failure;
 }
 
@@ -54,15 +62,21 @@ BehaviourTree::BehaviourStatus Door::IsDoorOpen::run()
 {
 	if(door->open)
 	{
+		std::cout << "IsDoorOpen: Success" << std::endl;
 		return BehaviourTree::Success;
 	} else
 	{
+		std::cout << "IsDoorOpen: Failure" << std::endl;
 		return BehaviourTree::Failure;
 	}
 }
 
 Door::Door(const std::string filename, sf::Vector2i startingIndex, Map* mapPtr): Agent(filename, startingIndex, mapPtr)
 {
+	closedThreatStencil = new DoorStencil();
+	openThreatStencil = new EmptyThreatStencil();;
+
+	closeDoor();
 }
 
 Door::~Door()
@@ -72,25 +86,21 @@ Door::~Door()
 void Door::closeDoor()
 {
 	open = false;
-	sprite.rotate(-90.0f);
+	sprite.setRotation(0);
+
+	SetThreatStencil(closedThreatStencil);
 }
 
 void Door::openDoor()
 {
 	open = true;
 	sprite.rotate(90.0f);
+
+	SetThreatStencil(openThreatStencil);
 }
 
 bool Door::Interact()
 {
-	if(open)
-	{
-		closeDoor();
-	} else
-	{
-		openDoor();
-	}
-
 	return true;
 }
 

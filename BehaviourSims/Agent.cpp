@@ -19,7 +19,7 @@ Agent::Agent(const std::string filename, sf::Vector2i startingIndex, Map* mapPtr
 
 	float scalex = map->GetHexSize() / sprite.getGlobalBounds().width ;
 	float scaley = map->GetHexSize() / sprite.getGlobalBounds().height;
-	float uniformscale = (scalex < scaley ? scalex : scaley) * 0.9f;
+	float uniformscale = (scalex < scaley ? scalex : scaley) * 1.2f;
 
 	sprite.scale(uniformscale, uniformscale);
 }

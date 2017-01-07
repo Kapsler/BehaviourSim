@@ -40,14 +40,14 @@ void Map::Render(sf::RenderWindow* window)
 		{
 			window->draw(*(hexdat->hex));
 
-			if (hexdat->threat > 0)
+			/*if (hexdat->threat > 0)
 			{
 				Hexagon threatHex = *hexdat->hex;
 				r.a = (255.0f / 10.0f) * hexdat->threat;
 				threatHex.setFillColor(r);
 				threatHex.setOutlineColor(sf::Color::Red);
 				window->draw(threatHex);
-			}
+			}*/
 
 		}
 	}
@@ -183,12 +183,6 @@ std::vector<HexData*> Map::AStarPath(HexData* start, HexData* target, std::vecto
 	std::unordered_map<HexData*, int> costsSoFar;
 	std::multimap<float, HexData*> priorityToDo;
 
-	if (GetDifficulty(target) >= unpassable)
-	{
-		std::cout << "Target is unpassable!" << std::endl;
-		return foundPath;
-	}
-
 	priorityToDo.insert(std::pair<float, HexData*>(0.0f, start));
 	cameFrom.insert_or_assign(start, nullptr);
 	costsSoFar.insert_or_assign(start, 0);
@@ -208,7 +202,7 @@ std::vector<HexData*> Map::AStarPath(HexData* start, HexData* target, std::vecto
 		for (HexData* neighbor : GetNeighbors(currentHex, usedMap))
 		{
 			int difficulty = GetDifficulty(neighbor);
-			if (difficulty >= unpassable)
+			if (difficulty >= unpassable && neighbor != target)
 			{
 				costsSoFar.insert_or_assign(neighbor, unpassable);
 			}
@@ -231,8 +225,15 @@ std::vector<HexData*> Map::AStarPath(HexData* start, HexData* target, std::vecto
 
 	while (currentHex != start)
 	{
-		currentHex = cameFrom.at(currentHex);
-		foundPath.push_back(currentHex);
+		if(cameFrom.find(currentHex) != cameFrom.end())
+		{
+			currentHex = cameFrom.at(currentHex);
+			foundPath.push_back(currentHex);
+		} else
+		{
+			foundPath.clear();
+			return foundPath;
+		}
 	}
 
 	std::reverse(foundPath.begin(), foundPath.end());
@@ -347,7 +348,6 @@ void Map::ResetThreat(Agent* toIgnore)
 		if (t != toIgnore)
 		{
 			t->GetThreatStencil()->SetThreats(t->GetPositionIndex(), *GetMapPtr());
-			hexMap[t->GetPositionIndex().x][t->GetPositionIndex().y]->threat += unpassable;
 		}
 	}
 

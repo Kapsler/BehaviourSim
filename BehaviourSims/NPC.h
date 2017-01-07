@@ -18,6 +18,18 @@ public:
 
 		sf::Vector2i targetIndex;
 		NPC* npc = nullptr;
+	}; 
+	
+	class IsPathPossible : public BehaviourTree::Node
+	{
+	public:
+		IsPathPossible(NPC* targetNpc, sf::Vector2i& target);
+		IsPathPossible(NPC* targetNpc, Object* object);
+
+		virtual BehaviourTree::BehaviourStatus run() override;
+
+		sf::Vector2i targetIndex;
+		NPC* npc = nullptr;
 	};
 
 	class WalkToObject : public BehaviourTree::Node
