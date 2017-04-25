@@ -10,9 +10,11 @@ Desk::Work::Work(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus Desk::Work::run()
 {
+	character->lastNode = "Work";
+
 	character->work += 10 + (rand() % 10);
 
-	std::cout << "Work: Success" << std::endl;
+	//std::cout << "Work: Success" << std::endl;
 	return BehaviourTree::Success;
 }
 

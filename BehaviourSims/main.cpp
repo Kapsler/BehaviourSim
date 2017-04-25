@@ -18,9 +18,9 @@
 #include "Bathtub.h"
 #include "Desk.h"
 
-const bool vsync = false;
-const float screenWidth = 1050.0f;
-const float screenHeight = 1200.0f;
+const bool vsync = true;
+const float screenWidth = 1050.0f*0.75;
+const float screenHeight = 900.0f;
 bool movementFlag = true;
 sf::RenderWindow *window;
 	
@@ -167,7 +167,7 @@ int main()
 		totalMoveTime += moveClock.restart().asSeconds();
 
 		//Moving
-		if(movementFlag && totalMoveTime > 0.00002f)
+		if(movementFlag && totalMoveTime > 0.000002f)
 		{
 			float fps = 1.0f / (currentFpsTime);
 			window->setTitle("Sims (" + std::to_string(static_cast<int>(fps)) + ")");

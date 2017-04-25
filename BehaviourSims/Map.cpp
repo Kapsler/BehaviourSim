@@ -40,15 +40,6 @@ void Map::Render(sf::RenderWindow* window)
 		{
 			window->draw(*(hexdat->hex));
 
-			/*if (hexdat->threat > 0)
-			{
-				Hexagon threatHex = *hexdat->hex;
-				r.a = (255.0f / 10.0f) * hexdat->threat;
-				threatHex.setFillColor(r);
-				threatHex.setOutlineColor(sf::Color::Red);
-				window->draw(threatHex);
-			}*/
-
 		}
 	}
 
@@ -62,29 +53,6 @@ void Map::Render(sf::RenderWindow* window)
 
 void Map::DebugRender(sf::RenderWindow* window)
 {
-	/*if (selectedHexDat != nullptr)
-	{
-	Hexagon drawSelected;
-
-	for(auto hexdat : GetNeighbors(selectedHexDat, hexMap))
-	{
-	drawSelected = *hexdat->hex;
-	drawSelected.setOutlineColor(sf::Color::Cyan);
-	window->draw(drawSelected);
-	}
-
-	drawSelected = *selectedHexDat->hex;
-	drawSelected.setOutlineColor(sf::Color::Red);
-	window->draw(drawSelected);
-
-
-	for (auto hexdat : debugPath)
-	{
-	drawSelected = *hexdat->hex;
-	drawSelected.setFillColor(sf::Color(255,0,255,255));
-	window->draw(drawSelected);
-	}
-	}*/
 
 	if (indicesRenderFlag)
 	{
@@ -238,18 +206,6 @@ std::vector<HexData*> Map::AStarPath(HexData* start, HexData* target, std::vecto
 
 	std::reverse(foundPath.begin(), foundPath.end());
 
-	//Adds all tested nodes to path
-	//for(auto it = cameFrom.begin(); it != cameFrom.end(); ++it)
-	//{
-	//	if(it->second != nullptr)
-	//	{
-	//		foundPath.push_back(it->second);
-	//	}
-	//		
-	//}
-
-	//std::cout << "Found Path! Size: " << foundPath.size() << std::endl;
-
 	return foundPath;
 }
 
@@ -261,7 +217,6 @@ int Map::GetDifficulty(HexData* HexToTest)
 
 void Map::HandleKeyboard(sf::Keyboard::Key key)
 {
-
 	if (key == sf::Keyboard::Key::D)
 	{
 		indicesRenderFlag = false;
@@ -292,10 +247,6 @@ void Map::HandleMouse(sf::Vector2f& mousePosition)
 
 void Map::HandleMouse(sf::Mouse::Button mb)
 {
-	//if (mb == sf::Mouse::Left)
-	//{
-	//	debugPath = AStarPath(hexMap[0][0], selectedHexDat, *GetMapPtr());
-	//}
 }
 
 std::vector<std::vector<HexData*>>* Map::GetMapPtr()

@@ -11,33 +11,35 @@ MainCharacter::IsDead::IsDead(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus MainCharacter::IsDead::run()
 {
+	character->lastNode = "IsDead";
+
 	if(character->energy < 0)
 	{
-		std::cout << "Died of energy" << std::endl;
+		//std::cout << "Died of energy" << std::endl;
 		character->dead = true;
 		return BehaviourTree::Running;
 	}
 	if(character->hygene < 0)
 	{
-		std::cout << "Died of hygene" << std::endl;
+		//std::cout << "Died of hygene" << std::endl;
 		character->dead = true;
 		return BehaviourTree::Running;
 	}
 	if(character->hunger > 1000)
 	{
-		std::cout << "Died of hunger" << std::endl;
+		//std::cout << "Died of hunger" << std::endl;
 		character->dead = true;
 		return BehaviourTree::Running;
 	}
 	if(character->urinaryUrgency > 500)
 	{
-		std::cout << "Died of urin" << std::endl;
+		//std::cout << "Died of urin" << std::endl;
 		character->dead = true;
 		return BehaviourTree::Running;
 	}
-	if(character->work > 2000)
+	if(character->work > 2000 || character->work < 0)
 	{
-		std::cout << "Died of work" << std::endl;
+		//std::cout << "Died of work" << std::endl;
 		character->dead = true;
 		return BehaviourTree::Running;
 	}
@@ -52,13 +54,15 @@ MainCharacter::HasToPee::HasToPee(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus MainCharacter::HasToPee::run()
 {
+	character->lastNode = "HasToPee";
+
 	if(character->urinaryUrgency > 100)
 	{
-		std::cout << "HasToPee: Success" << std::endl;
+		//std::cout << "HasToPee: Success" << std::endl;
 		return BehaviourTree::Success;
 	} else
 	{
-		std::cout << "HasToPee: Failure" << std::endl;
+		//std::cout << "HasToPee: Failure" << std::endl;
 		return BehaviourTree::Failure;
 	}
 }
@@ -70,13 +74,15 @@ MainCharacter::IsSleepy::IsSleepy(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus MainCharacter::IsSleepy::run()
 {
+	character->lastNode = "IsSleepy";
+
 	if (character->energy < 400)
 	{
-		std::cout << "IsSleepy: Success" << std::endl;
+		//std::cout << "IsSleepy: Success" << std::endl;
 		return BehaviourTree::Success;
 	}
 
-	std::cout << "IsSleepy: Failure" << std::endl;
+	//std::cout << "IsSleepy: Failure" << std::endl;
 	return BehaviourTree::Failure;
 }
 
@@ -87,13 +93,15 @@ MainCharacter::IsDirty::IsDirty(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus MainCharacter::IsDirty::run()
 {
+	character->lastNode = "IsDirty";
+
 	if (character->hygene < 350)
 	{
-		std::cout << "IsDirty: Success" << std::endl;
+		//std::cout << "IsDirty: Success" << std::endl;
 		return BehaviourTree::Success;
 	}
 
-	std::cout << "isDirty: Failure" << std::endl;
+	//std::cout << "isDirty: Failure" << std::endl;
 	return BehaviourTree::Failure;
 }
 
@@ -104,13 +112,15 @@ MainCharacter::IsHungry::IsHungry(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus MainCharacter::IsHungry::run()
 {
+	character->lastNode = "IsHungry";
+
 	if (character->hunger > 400)
 	{
-		std::cout << "IsHungry: Success" << std::endl;
+		//std::cout << "IsHungry: Success" << std::endl;
 		return BehaviourTree::Success;
 	}
 
-	std::cout << "IsHungry: Failure" << std::endl;
+	//std::cout << "IsHungry: Failure" << std::endl;
 	return BehaviourTree::Failure;
 }
 
@@ -121,7 +131,9 @@ MainCharacter::IsOverworked::IsOverworked(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus MainCharacter::IsOverworked::run()
 {
-	if(character->work > 1000)
+	character->lastNode = "IsOverworked";
+
+	if(character->work > 1500)
 	{
 		return BehaviourTree::Success;
 	}
@@ -136,10 +148,12 @@ MainCharacter::RelieveUrgency::RelieveUrgency(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus MainCharacter::RelieveUrgency::run()
 {
+	character->lastNode = "Pee";
+
 	character->urinaryUrgency = 0;
 	character->hunger += 50;
 	character->hygene -= 200;
-	std::cout << "Relieve: Success" << std::endl;
+	//std::cout << "Relieve: Success" << std::endl;
 	return BehaviourTree::Success;
 }
 
@@ -150,18 +164,19 @@ MainCharacter::Sleep::Sleep(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus MainCharacter::Sleep::run()
 {
+	character->lastNode = "Sleep";
 
 	if(character->energy > 900)
 	{
 		character->sleeping = false;
-		std::cout << "Sleep: Success" << std::endl;
+		//std::cout << "Sleep: Success" << std::endl;
 		return BehaviourTree::Success;
 	}
 
 	character->sleeping = true;
 	character->energy += 90;
 	character->energy += (rand() % 20) + 1;
-	std::cout << "Sleep: Running" << std::endl;
+	//std::cout << "Sleep: Running" << std::endl;
 	return BehaviourTree::Running;
 }
 
@@ -172,10 +187,12 @@ MainCharacter::Eat::Eat(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus MainCharacter::Eat::run()
 {
+	character->lastNode = "Eat";
+
 	if(character->inventory.at("food") > 0)
 	{
 		character->inventory.insert_or_assign("food", character->inventory.at("food") - 1);
-		character->hunger -= 600 + (rand()%200);
+		character->hunger -= 400 + (rand()%200);
 		return BehaviourTree::Success;
 	}
 
@@ -190,6 +207,8 @@ MainCharacter::HasInInventory::HasInInventory(MainCharacter* targetChar, const s
 
 BehaviourTree::BehaviourStatus MainCharacter::HasInInventory::run()
 {
+	character->lastNode = "HasInInventory";
+
 	if (character->inventory.find(itemName) != character->inventory.end())
 	{
 		if(character->inventory.at(itemName) > 0)
@@ -211,7 +230,7 @@ MainCharacter::MainCharacter(const std::string filename, sf::Vector2i startingIn
 	BehaviourTree::Repeat* live = new BehaviourTree::Repeat();
 	tree->root = live;
 
-	//Eating Need
+	//Death Check
 	live->addChild(new IsDead(this));
 
 	//Eating Need
@@ -228,6 +247,13 @@ MainCharacter::MainCharacter(const std::string filename, sf::Vector2i startingIn
 
 	//Work
 	live->addChild(generateWorkNode());
+
+	debugFont.loadFromFile("./Assets/arial.ttf");
+	debugText.setFont(debugFont);
+	debugText.setCharacterSize(24);
+	debugText.setFillColor(sf::Color::White);
+	debugText.setOutlineThickness(3);
+	debugText.setOutlineColor(sf::Color::Black);
 
 }
 
@@ -340,13 +366,6 @@ void MainCharacter::Behave()
 {
 	if(!dead)
 	{
-		std::cout << std::endl;
-		std::cout << "Urinary Urgency: " << urinaryUrgency << std::endl;
-		std::cout << "Energy: " << energy << std::endl;
-		std::cout << "Hunger: " << hunger << std::endl;
-		std::cout << "Hygene: " << hygene << std::endl;
-		std::cout << "Work: " << work << std::endl;
-
 		if (tree && tree->root)
 		{
 			tree->root->run();
@@ -366,4 +385,43 @@ void MainCharacter::Behave()
 			hygene -= (rand() % 1);
 		}
 	}
+}
+
+void MainCharacter::Render(sf::RenderWindow* window)
+{
+	window->draw(sprite);
+
+	debugText.setPosition(20, 5);
+	if(!dead)
+	{
+		debugText.setString("Dead: Alive");
+	} else
+	{
+		debugText.setString("Dead: Dead");
+	}
+	window->draw(debugText);
+
+	debugText.setPosition(20, 35);
+	debugText.setString("Hunger: " + std::to_string(static_cast<int>(hunger)));
+	window->draw(debugText);
+
+	debugText.setPosition(20, 65);
+	debugText.setString("Energy: " + std::to_string(static_cast<int>(energy)));
+	window->draw(debugText);
+
+	debugText.setPosition(20, 95);
+	debugText.setString("Urin: " + std::to_string(static_cast<int>(urinaryUrgency)));
+	window->draw(debugText);
+
+	debugText.setPosition(20, 125);
+	debugText.setString("Hygene: " + std::to_string(static_cast<int>(hygene)));
+	window->draw(debugText);
+
+	debugText.setPosition(20, 155);
+	debugText.setString("Work: " + std::to_string(static_cast<int>(work)));
+	window->draw(debugText);
+
+	debugText.setPosition(20, 185);
+	debugText.setString("Last Node: " + lastNode);
+	window->draw(debugText);
 }

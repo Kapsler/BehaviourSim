@@ -112,10 +112,10 @@ public:
 	BehaviourTree::Node* generateEatingNode();
 	BehaviourTree::Node* generateHygeneNode();
 	BehaviourTree::Node* generateWorkNode();
-
 	BehaviourTree::Node* generatePathNode(const std::string doorName, const std::string objectName);
 
 	void Behave() override;
+	void Render(sf::RenderWindow* window) override;
 	float urinaryUrgency = 0;
 	float energy = 1000;
 	float hunger = 0;
@@ -128,4 +128,7 @@ public:
 	bool dead = false;
 
 	std::unordered_map<std::string, int> inventory;
+
+	sf::Font debugFont;
+	sf::Text debugText;
 };

@@ -8,6 +8,8 @@ Fridge::TakeFood::TakeFood(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus Fridge::TakeFood::run()
 {
+	character->lastNode = "TakeFood";
+
 	character->inventory.insert_or_assign("food", character->inventory.at("food") + 1);
 	return BehaviourTree::Success;
 }

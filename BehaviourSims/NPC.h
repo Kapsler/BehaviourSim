@@ -70,4 +70,6 @@ public:
 	virtual void Behave() override;
 
 	virtual HexData* GetNextField(sf::Vector2i target, bool& result);
+
+	std::string lastNode = "";
 };

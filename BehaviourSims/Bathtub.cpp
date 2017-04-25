@@ -9,15 +9,17 @@ Bathtub::TakeShower::TakeShower(MainCharacter* targetChar)
 
 BehaviourTree::BehaviourStatus Bathtub::TakeShower::run()
 {
+	character->lastNode = "TakeShower";
+
 	if(character->hygene > 800)
 	{
-		std::cout << "TakeShower: Success" << std::endl;
+		//std::cout << "TakeShower: Success" << std::endl;
 		return BehaviourTree::Success;
 	}
 
 	character->hygene += 100 + (rand() % 100);
 
-	std::cout << "TakeShower: Running" << std::endl;
+	//std::cout << "TakeShower: Running" << std::endl;
 	return BehaviourTree::Running;
 }
 
